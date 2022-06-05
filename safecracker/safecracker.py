@@ -46,3 +46,6 @@ class Safecracker:
                 if angle_outside_tolerance_bool:
                     print("Tracked angle wrong.  Truing.")
                 return angle_outside_tolerance_bool
+
+    def zero(self):
+        self.anm.target_angle(0)

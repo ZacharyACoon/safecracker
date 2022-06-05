@@ -2,7 +2,7 @@
  "hardware": {
     "dial": {
         "numbers": 100,
-        "tolerance": 0.5,
+        "tolerance": 0.5
     },
     "motor": {
         "full_step_angle": 1.8,
@@ -18,7 +18,7 @@
     },
     "photointerrupter": {
       "pin": 22,
-      "angle": 70.2
+      "angle": 144
     },
     "accelerometer_gyroscope": {
       "i2c_address": 104

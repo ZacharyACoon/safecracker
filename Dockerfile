@@ -14,4 +14,4 @@ RUN /app/venv/bin/pip install \
   trio \
   quart-trio
 
-ADD * /app/
+COPY ./ /app/
