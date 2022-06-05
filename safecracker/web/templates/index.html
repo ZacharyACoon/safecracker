@@ -1,0 +1,16 @@
+<div style="display: flex; flex-direction: column; height: 100%;">
+  <div style="flex-grow: 1;">
+    <ul style="list-style-type: none;">
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    const ws = new WebSocket(`ws://${window.location.host}/api/v1/websocket/data`);
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      console.log(data);
+    }
+  });
+</script>

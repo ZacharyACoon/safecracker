@@ -1,0 +1,32 @@
+{
+ "hardware": {
+    "dial": {
+        "numbers": 100,
+        "tolerance": 0.5,
+    },
+    "motor": {
+        "full_step_angle": 1.8,
+        "tolerance_angle": 0.5
+    },
+    "a4988_pins": {
+      "direction": 7,
+      "step": 11,
+      "ms1": 16,
+      "ms2": 15,
+      "ms3": 12,
+      "enable": 18
+    },
+    "photointerrupter": {
+      "pin": 22,
+      "angle": 70.2
+    },
+    "accelerometer_gyroscope": {
+      "i2c_address": 104
+    }
+  },
+  "software": {
+    "web": {
+      "port": 80
+    }
+  }
+}
