@@ -19,7 +19,7 @@ class A4988:
     16: (1, 1, 1)
   }
   default_pulse_width = 1/1000000
-  default_step_delay = 0.003
+  default_step_delay = 0.005
 
   def __init__(self, a4988_pins, microsteps=1, default_step_delay=None):
     self.pins = a4988_pins

@@ -3,16 +3,20 @@ import asyncio
 
 
 class IndexedMotorWrapper:
-    def __init__(self, position_motor, acceleration_motor, photointerrupter, photointerrupter_position):
-        self.pm = position_motor
-        self.am = acceleration_motor
+    def __init__(self, degree_motor, photointerrupter, photointerrupter_degrees):
+        self.dm = degree_motor
         self.pi = photointerrupter
-        self.pip = photointerrupter_position
+        self.pip = photointerrupter_degrees
 
-    def find_index(self):
-        def step_callback():
-            print("sc")
+    def find_index(self, direction=False):
+        degrees = (1 if direction else -1) * 360
+        for step in self.dm.relative(degrees):
             if self.pi.status():
-                print(f"Found index at position {self.pm}")
-
-        self.am.steps(200*self.pm.motor.microsteps, step_callback=step_callback)
+                print("Found index.")
+                if self.dm.degrees != self.pip:
+                    print(f"We thought we were at {self.dm.degrees}.  Truing to {self.pip}.")
+                    self.dm.degrees = self.pip
+                    return 2
+                else:
+                    return 1
+        return 0
