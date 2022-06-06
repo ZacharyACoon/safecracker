@@ -9,8 +9,9 @@ class IndexedMotorWrapper:
         self.pip = photointerrupter_degrees
 
     def find_index(self, direction=False):
-        degrees = (1 if direction else -1) * 360
-        for step in self.dm.relative(degrees):
+        direction = 1 if direction else -1
+        list(self.dm.relative(direction * 360))
+        for step in self.dm.relative(direction * 360):
             if self.pi.status():
                 print("Found index.")
                 if self.dm.degrees != self.pip:
@@ -20,3 +21,16 @@ class IndexedMotorWrapper:
                 else:
                     return 1
         return 0
+
+    async def async_find_index(self, direction=False):
+        directoin = 1 if direction else -1
+        async for step in self.dm.async_relative(direction * 360):
+            if self.pi.status():
+                print("Found index.")
+                if self.dm.degrees != self.pip:
+                    print(f"We thought we were at {self.dm.degrees}.  Truing to {self.pip}.")
+                    self.dm.degrees = self.pip
+                    return 2
+                else:
+                    return 1
+        return 1
