@@ -6,7 +6,7 @@
     },
     "motor": {
         "full_step_degrees": 1.8,
-        "tolerance_degrees": 0.5
+        "tolerance_degrees": 50
     },
     "a4988_pins": {
       "direction": 7,
@@ -18,7 +18,7 @@
     },
     "photointerrupter": {
       "pin": 22,
-     "degrees": 223.2
+     "degrees": 222.3
     },
     "accelerometer_gyroscope": {
       "i2c_address": 104

@@ -26,18 +26,15 @@ class DegreeMotorWrapper:
         yield from self.steps(steps)
 
     def determine_degrees_to_absolute(self, target_degrees, direction=None):
-        target_degrees %= 360
-        if self.degrees < target_degrees:
-            print(1)
-            left = target_degrees - self.degrees - 360
-            right = target_degrees - self.degrees
+        p = self.degrees
+        t = target_degrees % 360
+        if t < p:
+            left = t - p
+            right = 360 - p + t
         else:
-            print(2)
-            left = target_degrees - self.degrees
-            right = 360 - self.degrees + target_degrees
-
-#        print(f"    Position {self.degrees}, Target {target_degrees}")
-#        print(f"    Left {left}, Right {right}")
+            left = t - 360 - p
+            right = t - p
+        print(p, t, left, right)
 
         if direction is True:
             return right
@@ -51,12 +48,12 @@ class DegreeMotorWrapper:
 
     def absolute(self, absolute_degrees, direction=None):
         relative_degrees = self.determine_degrees_to_absolute(absolute_degrees, direction)
-        #print(relative_degrees)
+        print("moving", relative_degrees)
         yield from self.relative(relative_degrees)
 
     async def async_step(self):
         await self.motor.async_step()
-        angular_delta = (1 if self.motor.direction else -1) * self.full_step_degrees / self.motor.microsteps
+        angular_delta = (1 if self.motor.direction else -1) * self.full_step_degrees // self.motor.microsteps
         self.degrees = angular_delta % 360
 
     async def async_steps(self, count):
@@ -67,7 +64,7 @@ class DegreeMotorWrapper:
             yield
 
     async def async_relative(self, degrees):
-        steps = int(degrees / self.full_step_degrees * self.motor.microsteps)
+        steps = int(degrees // self.full_step_degrees * self.motor.microsteps)
         async for _ in self.async_steps(steps):
             yield
 

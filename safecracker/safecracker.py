@@ -27,7 +27,7 @@ class Safecracker:
         list(self.degree_motor_wrapper.absolute(0, direction))
 
     def wipe(self, direction=False):
-        list(self.degree_motor_wrapper.relative((1 if direction else -1) * -4*360))
+        list(self.degree_motor_wrapper.relative((1 if direction else -1) * -4*36000))
 
     def first_two_numbers(self, c1, c2):
         self.wipe()
