@@ -17,16 +17,18 @@ if __name__ == "__main__":
     safecracker.zero()
     time.sleep(1)
 
-    input("Motor should turn left stopping every 10.")
-    for i in range(10, 100, 10):
-        list(motor.absolute(i, direction=False))
-        time.sleep(0.5)
+#    input("Motor should turn left stopping every 10.")
+#    for i in range(10, 100, 10):
+#        print(i)
+#        list(motor.absolute(i, direction=False))
+#        time.sleep(0.5)
 
-    print("Returning to 0")
-    safecracker.zero()
+#    print("Returning to 0")
+#    safecracker.zero()
 
     input("Motor should turn right stopping every 10.")
     for i in range(90, 0, -10):
+        print(i)
         list(motor.absolute(i, direction=True))
         time.sleep(0.5)
 

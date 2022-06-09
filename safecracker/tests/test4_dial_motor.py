@@ -23,6 +23,9 @@ if __name__ == "__main__":
     input(f"Motor should turn right to {motor.numbers // 2}.")
     list(motor.absolute(motor.numbers // 2, direction=True))
 
+    input("Motor should turn left to 0.")
+    list(motor.absolute(0))
+
     async def async_test():
         input("Motor should turn right and stop at index.")
         await motor.async_find_index(direction=True)

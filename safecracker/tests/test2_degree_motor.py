@@ -24,23 +24,33 @@ if __name__ == "__main__":
     #input("Motor should turn left, 360 degrees.")
     #list(motor.relative(-360))
 
-    input("Motor should turn left 90 degrees.")
-    list(motor.absolute(-90, direction=False))
-    print("position", motor.degrees)
+    #input("Motor should turn left 90 degrees.")
+    #list(motor.absolute(-90, direction=False))
+    #print("position", motor.degrees)
 
-    input("Motor should turn right 180 degrees.")
-    list(motor.absolute(90, direction=True))
-    print("position", motor.degrees)
+    #input("Motor should turn right 180 degrees.")
+    #list(motor.absolute(90, direction=True))
+    #print("position", motor.degrees)
 
-    input("Motor should return to zero.")
-    list(motor.absolute(0))
+    #input("Motor should turn left stopping at each 90 degrees.")
+    #for i in range(90, 361, 90):
+    #    list(motor.absolute(-i, direction=False))
+    #    time.sleep(0.5)
 
-    input("Motor should turn left stopping at each 90 degrees.")
-    for i in range(0, 360, 90):
-        list(motor.absolute(-i, direction=False))
-        time.sleep(0.5)
+    #input("Motor should tur right stopping at each 90 degrees.")
+    #for i in range(90, 361, 90):
+    #    list(motor.absolute(i, direction=True))
+    #    time.sleep(0.5)
 
-    list(motor.absolute(0))
+    #for i in range(5, 105, 5):
+    #    d = - 360 / 100 * i
+    #    list(motor.absolute(d, direction=False))
+    #    time.sleep(0.25)
+
+    for i in range(5, 105, 5):
+        d = 360 / 100 * i
+        list(motor.absolute(d, direction=True))
+        input()
 
     async def async_test():
         input("Motor should turn right, 360 degrees.")

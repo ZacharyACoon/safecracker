@@ -29,12 +29,15 @@ class DegreeMotorWrapper:
         p = self.degrees
         t = target_degrees % 360
         if t < p:
+            print("  ", "t<p")
             left = t - p
-            right = 360 - p + t
+            right = p - t
         else:
-            left = t - 360 - p
+            print(" ", "else")
+            left = t - p - 360
             right = t - p
-        print(p, t, left, right)
+
+        print("  ", p, t, left, right)
 
         if direction is True:
             return right
@@ -48,7 +51,7 @@ class DegreeMotorWrapper:
 
     def absolute(self, absolute_degrees, direction=None):
         relative_degrees = self.determine_degrees_to_absolute(absolute_degrees, direction)
-        print("moving", relative_degrees)
+        print("    moving", relative_degrees)
         yield from self.relative(relative_degrees)
 
     async def async_step(self):
