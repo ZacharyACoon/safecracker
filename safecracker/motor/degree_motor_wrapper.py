@@ -23,7 +23,8 @@ class DegreeMotorWrapper:
             yield
 
     def relative(self, degrees):
-        steps = int(degrees / self.full_step_degrees * self.motor.microsteps)
+        steps = int((degrees / self.full_step_degrees) * self.motor.microsteps)
+        print(f"    d={degrees}/fsdegrees={self.full_step_degrees} * ms={self.motor.microsteps} => s={steps}")
         yield from self.steps(steps)
 
     def absolute_to_relative(self, target_degrees, direction=None):
@@ -33,14 +34,12 @@ class DegreeMotorWrapper:
             left = 0
             right = 0
         elif t < p:
-            print("    t<p")
             left = t - p
             right = 360 - p + t
         else:
-            print("    t<p")
             left = -360 - p + t
             right = t - p
-        print(f"    Position={p}, Target={t}, Left={left}, Right={right}")
+        #print(f"    D={direction}, P={p}, T={t}, L={left}, R={right}")
 
         # TRUE IS CLOCKWISE
         if direction is False:
@@ -55,7 +54,7 @@ class DegreeMotorWrapper:
 
     def absolute(self, absolute_degrees, direction=None):
         relative_degrees = self.absolute_to_relative(absolute_degrees, direction)
-        print(f"relative={relative_degrees}")
+        #print(f"relative={relative_degrees}")
         yield from self.relative(relative_degrees)
 
     async def async_step(self):

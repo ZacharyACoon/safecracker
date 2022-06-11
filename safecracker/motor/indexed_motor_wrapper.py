@@ -32,13 +32,15 @@ class IndexedMotorWrapper:
 
                 center = width / 2
                 index_degrees = self.pip + (-center if direction else center)
-                print(f"Direction={direction}, a={a}, b={b}, w={width}, c={center}")
-                if abs(self.pip - index_degrees) > self.tolerance_degrees:
+                #print(f"Direction={direction}, a={a}, b={b}, w={width}, c={center}")
+                if abs(self.pip - index_degrees) <= self.tolerance_degrees:
+                    return 1
+                else:
                     print(f"Current position was {index_degrees}.  Truing to {self.pip}.")
                     self.motor.degrees = index_degrees
-                    break
+                    return 2
         else:
-            print("Not found?")
+            return 0
 
     async def async_find_index(self, direction=False):
         direction = -1 if direction else 1

@@ -3,9 +3,10 @@ import asyncio
 
 
 class DialMotorWrapper:
-    def __init__(self, degree_motor, numbers, left_to_right=True):
+    def __init__(self, degree_motor, numbers, tolerance, left_to_right=True):
         self.motor = degree_motor
         self.numbers = numbers
+        self.tolerance = tolerance
         self.left_to_right = left_to_right
         self.number = 0
 

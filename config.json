@@ -2,7 +2,9 @@
  "hardware": {
     "dial": {
         "numbers": 100,
-        "tolerance": 0.5
+        "tolerance": 2,
+        "left_to_right": true,
+        "latch_degrees": 135
     },
     "motor": {
         "full_step_degrees": 1.8,

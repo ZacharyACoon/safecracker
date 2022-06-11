@@ -1,3 +1,5 @@
 venv
 .idea
 *.pyc
+progress.txt
+attempts.log
