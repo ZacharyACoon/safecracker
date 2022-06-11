@@ -47,6 +47,7 @@ class A4988:
 
     def set_direction(self, direction: bool):
         g.output(self.pins.direction, int(direction))
+        self.direction = direction
 
     def step(self):
         g.output(self.pins.step, 1)

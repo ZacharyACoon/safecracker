@@ -13,7 +13,6 @@ class DialMotorWrapper:
         absolute_degrees = 360 / self.numbers * number
         if self.left_to_right:
             absolute_degrees = 360 - absolute_degrees
-        #absolute_degrees *= -1 if self.left_to_right else 1
         return absolute_degrees
 
     def absolute(self, number, direction=False):

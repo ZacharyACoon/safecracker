@@ -14,22 +14,17 @@ if __name__ == "__main__":
     s.motor.set_microsteps(16)
     s.default_step_delay = 0.02
 
-    input("Should turn right and find index and continue to zero.")
-    s.find_index(direction=False)
-    input("now zero.")
-    s.zero(direction=False)
+    s.find_index()
+    s.zero()
 
-    input("Should turn left and find index and continue to zero.")
-    s.find_index(direction=True)
-    input("now zero.")
-    s.zero(direction=True)
-
-    input("Should turn right and stop at each 90 degrees.  75, 50, 25, 0")
-    for d in range(90, 450, 90):
-        list(s.degree_motor_wrapper.absolute(d, direction=False))
-        time.sleep(1)
+#    input("Should turn right and stop at each 90 degrees.  75, 50, 25, 0")
+#    for d in range(90, 450, 90):
+#        list(s.degree_motor_wrapper.absolute(d, direction=False))
+#        time.sleep(1)
 
     input("Should turn left and stop at each 90 degrees. 25, 50, 75, 0")
-    for d in range(90, 450, 90):
-        list(s.degree_motor_wrapper.absolute(-d, direction=True))
+    for d in range(-90, -450, -90):
+        print(d, d%360)
+        list(s.degree_motor_wrapper.absolute(d, direction=True))
         time.sleep(1)
+        input()

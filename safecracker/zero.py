@@ -14,5 +14,12 @@ if __name__ == "__main__":
     safecracker = Safecracker(config)
     safecracker.motor.set_microsteps(16)
 
-    safecracker.indexed_motor_wrapper.find_index()
-    safecracker.zero()
+    print("Right")
+    safecracker.indexed_motor_wrapper.find_index(direction=False)
+    safecracker.zero(direction=False)
+
+    input("")
+
+    print("Left")
+    safecracker.indexed_motor_wrapper.find_index(direction=True)
+    safecracker.zero(direction=True)
