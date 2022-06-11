@@ -20,10 +20,10 @@ class Safecracker:
         self.indexed_motor_wrapper = IndexedMotorWrapper(self.degree_motor_wrapper, self.pi, self.config["hardware"]["photointerrupter"]["degrees"])
         self.dial_motor_wrapper = DialMotorWrapper(self.degree_motor_wrapper, config["hardware"]["dial"]["numbers"])
 
-    def find_index(self, direction=False):
+    def find_index(self, direction=None):
         self.indexed_motor_wrapper.find_index(direction)
 
-    def zero(self, direction=False):
+    def zero(self, direction=None):
         list(self.degree_motor_wrapper.absolute(0, direction))
 
     def wipe(self, direction=False):

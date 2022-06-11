@@ -1,5 +1,6 @@
 import time
 import trio
+import unittest
 
 
 class DegreeMotorWrapper:
@@ -10,8 +11,8 @@ class DegreeMotorWrapper:
 
     def step(self):
         self.motor.step()
-        angular_delta = (1 if self.motor.direction else -1) * self.full_step_degrees / self.motor.microsteps
-        self.degrees += angular_delta
+        step_angle = (-1 if self.motor.direction else 1) * self.full_step_degrees / self.motor.microsteps
+        self.degrees += step_angle
         self.degrees %= 360
 
     def steps(self, count):
@@ -25,33 +26,35 @@ class DegreeMotorWrapper:
         steps = int(degrees / self.full_step_degrees * self.motor.microsteps)
         yield from self.steps(steps)
 
-    def determine_degrees_to_absolute(self, target_degrees, direction=None):
+    def absolute_to_relative(self, target_degrees, direction=None):
         p = self.degrees
         t = target_degrees % 360
-        if t < p:
-            print("  ", "t<p")
+        if t == p:
+            left = 0
+            right = 0
+        elif t < p:
+            print("    t<p")
             left = t - p
-            right = p - t
+            right = 360 - p + t
         else:
-            print(" ", "else")
-            left = t - p - 360
+            print("    t<p")
+            left = -360 - p + t
             right = t - p
+        print(f"    Position={p}, Target={t}, Left={left}, Right={right}")
 
-        print("  ", p, t, left, right)
-
-        if direction is True:
+        # TRUE IS CLOCKWISE
+        if direction is False:
             return right
-        elif direction is False:
+        elif direction is True:
             return left
-        else:
+        elif direction is None:
             if abs(left) < abs(right):
                 return left
             else:
                 return right
 
     def absolute(self, absolute_degrees, direction=None):
-        relative_degrees = self.determine_degrees_to_absolute(absolute_degrees, direction)
-        print("    moving", relative_degrees)
+        relative_degrees = self.absolute_to_relative(absolute_degrees, direction)
         yield from self.relative(relative_degrees)
 
     async def async_step(self):
@@ -72,6 +75,25 @@ class DegreeMotorWrapper:
             yield
 
     async def async_absolute(self, absolute_degrees, direction=None):
-        relative_degrees = self.determine_degrees_to_absolute(absolute_degrees, direction)
+        relative_degrees = self.absolute_to_relative(absolute_degrees, direction)
         async for _ in self.async_relative(relative_degrees):
             yield
+
+
+class TestDegreeMotor(unittest.TestCase):
+    def test1_absolute_to_relative(self):
+        self.motor = DegreeMotorWrapper({"microsteps": 8}, 1.8)
+
+        for i in range(90, 360, 90):
+            r = self.motor.absolute_to_relative(i, direction=True)
+            self.assertEqual(90, r)
+            self.motor.degrees += r
+
+        print(0)
+
+        self.motor.degrees = 0
+        for i in range(-90, -360, -90):
+            r = self.motor.absolute_to_relative(i, direction=False)
+            self.assertEqual(-90, r)
+            self.motor.degrees += r
+            self.motor.degrees %= 360
