@@ -65,12 +65,12 @@ class Safecracker:
             # c1
             list(self.degree_motor_wrapper.relative(-360*3))
             list(self.dial_motor_wrapper.absolute(c1, direction=True))
-            time.sleep(1)
+            time.sleep(0.1)
 
             # c2
             list(self.degree_motor_wrapper.relative(360*2))
             list(self.dial_motor_wrapper.absolute(c2, direction=False))
-            time.sleep(1)
+            time.sleep(0.1)
 
             # try c3s rapidly.
             list(self.degree_motor_wrapper.relative(-360))
@@ -80,7 +80,7 @@ class Safecracker:
 
                 # c3
                 list(self.dial_motor_wrapper.absolute(c3, direction=True))
-                time.sleep(1)
+                time.sleep(0.1)
 
                 # attempt to latch
                 list(self.degree_motor_wrapper.relative(latch_degrees))

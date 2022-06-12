@@ -12,7 +12,7 @@ if __name__ == "__main__":
     config = get_relative_config_json()
     s = Safecracker(config)
     s.motor.set_microsteps(4)
-    s.motor.default_step_delay = 0.005
+    s.motor.default_step_delay = 0.003
 
     print(Path().resolve())
     attempt_log = Path("attempts.log")
