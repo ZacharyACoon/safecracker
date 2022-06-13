@@ -57,6 +57,7 @@ class Safecracker:
         self.zero(direction=True)
 
         a = start
+        start_time = time.time()
         while a < combination_count:
             scs = self.index_to_combination(scaled_dial_range, a)
             c1, c2, c3 = tuple(v*tolerance for v in scs)
@@ -94,3 +95,7 @@ class Safecracker:
             # test if we're off.
             result = self.indexed_motor_wrapper.find_index(direction=True)
             yield result, a
+            set_time = time.time() - start_time
+            print(f"Time for this set: {set_time}")
+            print(f"Time per combo: {set_time/50}")
+            print(f"ETA All: ~{125000/set_time}")
