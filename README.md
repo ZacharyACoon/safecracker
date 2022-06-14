@@ -58,7 +58,20 @@ The mechanical dial lock operates using internal wheels with a notch in them.  I
 
 ### Software
 
-* A4988 Motor Class
-* 
+* A4988 Motor Class - To configure and control the driver.
+* Wrapper Classes for features:Degrees, Indexing Position, Dial Numbers, Acceleration
+     * DegreeMotorWrapper - estimate and operate in stepping in angles.
+     * IndexedMotorWrapper - indexing a position to check and measure position.
+     * DialMotorWrapper - translate dial numbers and scale to degrees.
 
----
+#### Todo:
+* Refactor generators to use callbacks.
+* Duplicate to async class.
+* ~~Web Server~~
+* Action Queues.
+* Tie Web Server to Action Queues.
+
+### Headaches.
+
+* Direction=True pin actually means "Counter Clockwise" which means -1, rename to CCW=True
+* Traversing the 0/360 boundary can produce odd results and requires logic I'm not familiar with thinking through.
