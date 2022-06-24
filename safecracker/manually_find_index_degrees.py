@@ -19,8 +19,8 @@ if __name__ == "__main__":
             print("Entry not recognized.")
 
     motor.degrees._scaled_degrees = 0
-    index_center = motor.index.find(direction=True)[1] / motor.degrees.scaler
-    motor.degrees.absolute(0, direction=True)
+    index_center = motor.index.find(direction=False)[2] / motor.degrees.scaler
+    motor.degrees.absolute(0, direction=False)
 
     print(f"Assuming you started on exactly 0:")
     print(f"    - index's center is located at: {index_center}")

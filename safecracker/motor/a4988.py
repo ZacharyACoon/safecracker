@@ -66,13 +66,13 @@ class A4988(Log):
         g.output(self.a4988_pins.enable, int(not e))
         self._engaged = e
 
-    @Log.method(level=3)
+    @Log.method(level=2)
     def step(self):
         g.output(self.a4988_pins.step, 1)
         time.sleep(1/1000000)
         g.output(self.a4988_pins.step, 0)
 
-    @Log.method
+    @Log.method(level=3)
     def steps(self, delta):
         self.direction = delta > 0
         for _ in range(abs(delta)):

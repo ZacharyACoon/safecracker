@@ -11,21 +11,21 @@ class DegreesMotorWrapper(Log):
         self.full_step_degrees = int(full_step_degrees * self.scaler)
         self._scaled_degrees = 0
 
-    @Log.method(level=3)
+    @Log.method(level=2)
     def step(self):
         self.motor.step()
         step_angle = (1 if self.motor.direction else -1) * (self.full_step_degrees // self.motor.microsteps)
         self._scaled_degrees = (self._scaled_degrees + step_angle) % (360 * self.scaler)
         #self.log.debug(f"scaled={self._scaled_degrees}, degrees={self._scaled_degrees // self.scaler}")
 
-    @Log.method
+    @Log.method(level=3)
     def steps(self, delta):
         self.motor.direction = delta > 0
         for _ in range(abs(delta)):
             self.step()
             time.sleep(self.motor.default_step_delay / self.motor.microsteps)
 
-    @Log.method
+    @Log.method(level=4)
     def relative_to_steps(self, degrees):
         scaled_degrees = int(degrees * self.scaler)
         steps = int((scaled_degrees / self.full_step_degrees) * self.motor.microsteps)
@@ -35,7 +35,7 @@ class DegreesMotorWrapper(Log):
     def relative(self, degrees):
         self.steps(self.relative_to_steps(degrees))
 
-    @Log.method
+    @Log.method(level=4)
     def _absolute_to_relative(self, target_degrees, direction=None):
         p = self._scaled_degrees
         t = (target_degrees % 360) * self.scaler
@@ -66,5 +66,6 @@ class DegreesMotorWrapper(Log):
         return self._scaled_degrees / self.scaler
 
     @degrees.setter
+    @Log.method
     def degrees(self, d):
         self._scaled_degrees = int(d * self.scaler)

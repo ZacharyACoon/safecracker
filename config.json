@@ -4,7 +4,9 @@
         "numbers": 100,
         "tolerance": 2,
         "left_to_right": true,
-        "latch_degrees": 135
+        "latch_number": 80,
+        "last_number_forbidden_range": [80, 99],
+        "wheels": 3
     },
     "motor": {
         "full_step_degrees": 1.8,

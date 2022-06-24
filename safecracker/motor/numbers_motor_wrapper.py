@@ -1,3 +1,4 @@
+import logging
 from safecracker.log import Log
 import time
 
@@ -10,7 +11,7 @@ class NumbersMotorWrapper(Log):
         self.tolerance = tolerance
         self.left_to_right = left_to_right
 
-    @Log.method
+    @Log.method(level=4)
     def _number_to_degrees(self, number):
         number *= -1 if self.left_to_right else 1
         degrees = 360 * number / self.numbers

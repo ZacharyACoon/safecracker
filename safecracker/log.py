@@ -35,7 +35,7 @@ def build_default_root_logger(name=None):
     log_format = "%(asctime)22s, %(levelno)s, %(name)s, %(message)s"
     formatter = DefaultFormatter(fmt=log_format)
     root_logger = logging.getLogger(name)
-    root_logger.setLevel(5)
+    root_logger.setLevel(7)
     console_stderr_handler = logging.StreamHandler(sys.stderr)
     console_stderr_handler.setFormatter(formatter)
     root_logger.addHandler(console_stderr_handler)
@@ -59,7 +59,7 @@ class Log:
 
     @staticmethod
     def method(*args, **kwargs):
-        def modify_verbosity(level=logging.DEBUG, log_return=True):
+        def modify_verbosity(level=logging.DEBUG, log_return=False):
             def modify_fn(fn):
                 def modified_fn(self, *args, **kwargs):
                     log_message = f"{fn.__name__}("
