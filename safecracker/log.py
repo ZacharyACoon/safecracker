@@ -35,7 +35,7 @@ def build_default_root_logger(name=None):
     log_format = "%(asctime)22s, %(levelno)s, %(name)s, %(message)s"
     formatter = DefaultFormatter(fmt=log_format)
     root_logger = logging.getLogger(name)
-    root_logger.setLevel(7)
+    root_logger.setLevel(logging.DEBUG)
     console_stderr_handler = logging.StreamHandler(sys.stderr)
     console_stderr_handler.setFormatter(formatter)
     root_logger.addHandler(console_stderr_handler)
@@ -53,8 +53,14 @@ def configure_logging(config):
 
 
 class Log:
-    def __init__(self, parent_logger=None, *args, **kwargs):
-        self.log = (parent_logger.getChild if parent_logger else logging.getLogger)(self.__class__.__name__)
+    def __init__(self, parent_logger:logging.Logger=None, parent=None, *args, **kwargs):
+        if parent_logger:
+            factory = parent_logger.getChild
+        elif parent and parent.log:
+            factory = parent.log.getChild
+        else:
+            factory = logging.getLogger
+        self.log = factory(self.__class__.__name__)
         self.log.debug("Initializing.")
 
     @staticmethod

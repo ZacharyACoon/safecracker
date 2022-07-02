@@ -18,26 +18,36 @@ class A4988(Log):
         8: (1, 1, 0),
         16: (1, 1, 1)
     }
-    default_step_delay = 0.05
 
-    def __init__(self, a4988_pins, microsteps=4, step_delay=None, parent_logger=None):
-        super().__init__(parent_logger)
+    def __init__(self, a4988_pins, microsteps_per_step=4, parent_logger=None, parent=None):
+        super().__init__(parent_logger, parent)
         self.a4988_pins = a4988_pins
         for pin in self.a4988_pins:
             g.setup(pin, g.OUT)
             g.output(pin, 0)
 
-        self.engaged = True
-        self.direction = True
-        self.microsteps = microsteps
-        self.step_delay = step_delay or self.default_step_delay
+        self._microsteps = microsteps_per_step
+        self._engaged = False
+        self._direction = False
+        self.direction = False
+        self.microsteps = microsteps_per_step
+
+    @property
+    def engaged(self):
+        return self._engaged
+
+    @engaged.setter
+    @Log.method(8)
+    def engaged(self, e: bool):
+        g.output(self.a4988_pins.enable, int(not e))
+        self._engaged = e
 
     @property
     def direction(self):
         return self._direction
 
     @direction.setter
-    @Log.method
+    @Log.method(12)
     def direction(self, d: bool):
         d = bool(d)
         g.output(self.a4988_pins.direction, int(not d))
@@ -48,7 +58,7 @@ class A4988(Log):
         return self._microsteps
 
     @microsteps.setter
-    @Log.method
+    @Log.method(7)
     def microsteps(self, m: int):
         assert m in self._microsteps_to_pin_state_map
         pins = self.a4988_pins.ms1, self.a4988_pins.ms2, self.a4988_pins.ms3
@@ -56,33 +66,8 @@ class A4988(Log):
             g.output(pins[i], v)
         self._microsteps = m
 
-    @property
-    def engaged(self):
-        return self._engaged
-
-    @engaged.setter
-    @Log.method
-    def engaged(self, e: bool):
-        g.output(self.a4988_pins.enable, int(not e))
-        self._engaged = e
-
-    @Log.method(level=2)
+    @Log.method(level=5)
     def step(self):
         g.output(self.a4988_pins.step, 1)
         time.sleep(1/1000000)
         g.output(self.a4988_pins.step, 0)
-
-    @Log.method(level=3)
-    def steps(self, delta):
-        self.direction = delta > 0
-        for _ in range(abs(delta)):
-            self.step()
-            time.sleep(self.default_step_delay / self.microsteps)
-
-    @property
-    def step_delay(self):
-        return self.default_step_delay
-
-    @step_delay.setter
-    def step_delay(self, v):
-        self.default_step_delay = v

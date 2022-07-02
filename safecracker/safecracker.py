@@ -40,9 +40,9 @@ class Safecracker(Log):
         l = len(numbers)
         for i, v in enumerate(numbers[:-1]):
             direction = i % 2 != 0
-            self.motor.degrees.relative((self.wheels-i) * 360 * (1 if direction else -1))
-            self.motor.numbers.absolute(v, direction=direction)
-            #input(f"Should be at {v}")
+            self.motor.degrees.relative((self.wheels - i) * 360 * (1 if direction else -1))
+            self.motor.degrees.absolute(v, direction=direction)
+            input(f"Should be at {v}")
             time.sleep(0.1)
 
     @Log.method
@@ -55,12 +55,13 @@ class Safecracker(Log):
         set_start_time = time.time()
         while attempt < combination_space:
             self.motor.index.calibrate(direction=self.wheels % 2 == 0)
-#            input("Calibrated.")
+            input("Calibrated.")
 
             cs = self.index_to_combination(attempt)
             self.log.info(f"Entering first digits: {cs[:-1]}")
             self.enter_numbers_except_last(cs)
 
+            self.motor.degrees(-360)
             self.log.info(f"Rapidly attempting last wheel.")
             last_number = cs[-1]
             while last_number < self.numbers:
@@ -68,10 +69,10 @@ class Safecracker(Log):
                     self.log.info(f"Attempt={attempt}, Combination={(*cs[:-1], last_number)}")
                     self.motor.numbers.absolute(last_number, direction=False)
                     time.sleep(0.1)
- #                   input(f"Should be at {last_number}")
+                    input(f"Should be at {last_number}")
                     self.motor.numbers.absolute(self.latch_number, direction=True)
                     time.sleep(0.1)
- #                   input(f"Should be at {self.latch_number}")
+                    input(f"Should be at {self.latch_number}")
 
                 last_number += self.tolerance
                 attempt += 1
