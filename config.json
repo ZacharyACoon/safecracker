@@ -21,8 +21,8 @@
     },
     "photointerrupter": {
       "pin": 22,
-     "degrees": 224.2125,
-     "tolerance_degrees": 0.1
+     "degrees": 219.0375,
+     "tolerance_degrees": 1
     },
     "accelerometer_gyroscope": {
       "i2c_address": 104

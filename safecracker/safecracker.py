@@ -1,14 +1,6 @@
 from safecracker.log import Log
-from safecracker.motor.a4988 import A4988_Pins, A4988
-from safecracker.motor.degrees_motor_wrapper import DegreesMotorWrapper
-from safecracker.motor.indexed_motor_wrapper import IndexedMotorWrapper
-from safecracker.motor.numbers_motor_wrapper import NumbersMotorWrapper
-from mpu6050 import mpu6050
 from pathlib import Path
-
-
 import time
-import asyncio
 
 
 class Safecracker(Log):
@@ -51,17 +43,16 @@ class Safecracker(Log):
         self.log.info(f"We estimate {combination_space} possible combinations.")
 
         increment = self.motor.numbers.tolerance
-
         set_start_time = time.time()
         while attempt < combination_space:
             self.motor.index.calibrate(direction=self.wheels % 2 == 0)
-            input("Calibrated.")
+            input("Calibrated")
 
             cs = self.index_to_combination(attempt)
             self.log.info(f"Entering first digits: {cs[:-1]}")
             self.enter_numbers_except_last(cs)
 
-            self.motor.degrees(-360)
+            self.motor.degrees.relative(-360)
             self.log.info(f"Rapidly attempting last wheel.")
             last_number = cs[-1]
             while last_number < self.numbers:
@@ -77,8 +68,6 @@ class Safecracker(Log):
                 last_number += self.tolerance
                 attempt += 1
 
-            self.log.info("Range finished. Checking calibration.")
-            within_tolerance, tolerance = self.motor.index.check_calibration(direction=False)
             set_stop_time = time.time()
             set_time = set_stop_time - set_start_time
             set_count = int(combination_space / self.adjusted_numbers)
@@ -98,12 +87,12 @@ class Safecracker(Log):
             attempt = 0
 
         if not suspects_file.is_file():
-            with open(suspects_file, "w") as f:
+            with open(suspects_file, "w+") as f:
                 f.write(f"within_tolernace, tolerance, attempt, combination\n")
 
         for within_tolerance, tolerance, attempt, numbers in self.iterate_through_combinations(attempt):
-            with open(last_attempt_file, "w") as f:
+            with open(last_attempt_file, "w+") as f:
                 f.write(f"{attempt}")
 
-            with open(suspects_file, "a") as f:
+            with open(suspects_file, "a+") as f:
                 f.write(f"{within_tolerance}, {tolerance}, {attempt}, {numbers}\n")

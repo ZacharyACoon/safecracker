@@ -1,5 +1,6 @@
 from safecracker.log import Log
 import time
+import logging
 
 
 class Degrees(Log):
@@ -20,12 +21,12 @@ class Degrees(Log):
         steps = int(degrees * self.motor.position.positions / 360)
         return steps
 
-    @Log.method
+    @Log.method(logging.INFO)
     def relative(self, degrees):
         relative_steps = self.degrees_to_position(degrees)
         self.motor.steps(relative_steps)
 
-    @Log.method
+    @Log.method(logging.INFO)
     def absolute(self, degrees, direction=None):
         target = self.degrees_to_position(degrees)
         relative_steps = self.motor.position.absolute_to_relative(target, direction)

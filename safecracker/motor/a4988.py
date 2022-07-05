@@ -47,7 +47,7 @@ class A4988(Log):
         return self._direction
 
     @direction.setter
-    @Log.method(12)
+    @Log.method(8)
     def direction(self, d: bool):
         d = bool(d)
         g.output(self.a4988_pins.direction, int(not d))
@@ -58,7 +58,7 @@ class A4988(Log):
         return self._microsteps
 
     @microsteps.setter
-    @Log.method(7)
+    @Log.method(8)
     def microsteps(self, m: int):
         assert m in self._microsteps_to_pin_state_map
         pins = self.a4988_pins.ms1, self.a4988_pins.ms2, self.a4988_pins.ms3
@@ -66,7 +66,7 @@ class A4988(Log):
             g.output(pins[i], v)
         self._microsteps = m
 
-    @Log.method(level=5)
+    @Log.method(4)
     def step(self):
         g.output(self.a4988_pins.step, 1)
         time.sleep(1/1000000)

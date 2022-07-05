@@ -1,4 +1,3 @@
-
 import RPi.GPIO as g
 from safecracker.config import get_relative_config_json
 from safecracker.defaults import log, config, motor

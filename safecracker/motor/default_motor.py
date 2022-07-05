@@ -8,7 +8,7 @@ import time
 
 
 class DefaultMotor(Log):
-    default_step_delay = 0.00001
+    default_step_delay = 0.001
 
     def __init__(self, a4988_pins, microsteps_per_step, full_step_degrees, index_pin, index_degrees, index_tolerance_degrees, numbers, numbers_tolerance, left_to_right, step_delay=None, parent_logger=None, parent=None):
         super().__init__(parent_logger, parent)
@@ -19,7 +19,7 @@ class DefaultMotor(Log):
         self.numbers = Numbers(self, numbers, numbers_tolerance, left_to_right, parent=self)
         self.step_delay = step_delay or self.default_step_delay
 
-    @Log.method(3)
+    @Log.method(5)
     def step(self):
         self.driver.step()
         self.position.step()
