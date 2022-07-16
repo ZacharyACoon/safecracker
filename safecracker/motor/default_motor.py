@@ -23,7 +23,8 @@ def delay_profile(i, count):
 
 
 class DefaultMotor(Log):
-    default_step_delay = 0.00075
+    #default_step_delay = 0.00075
+    default_step_delay = 0.0005
 
     def __init__(self, a4988_pins, microsteps_per_step, full_step_degrees, index_pin, index_degrees, index_tolerance_degrees, numbers, numbers_tolerance, left_to_right, step_delay=None, parent_logger=None, parent=None):
         super().__init__(parent_logger, parent)

@@ -1,5 +1,6 @@
 venv
 .idea
 *.pyc
-*.log
-progress.txt
+logs/
+combination_index.txt
+suspects.txt

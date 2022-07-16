@@ -37,7 +37,7 @@ class Safecracker(Log):
             self.motor.degrees.relative((self.wheels - i) * 360 * (1 if direction else -1))
             self.motor.numbers.absolute(v, direction=direction)
             #self.motor.degrees.absolute(v, direction=direction)
-            time.sleep(0.5)
+            time.sleep(0.1)
 
     @Log.method
     def iterate_through_combinations(self, combination_index=0):

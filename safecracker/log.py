@@ -36,7 +36,7 @@ def build_default_root_logger(name=None):
     formatter = DefaultFormatter(fmt=log_format)
     root_logger = logging.getLogger(name)
     root_logger.setLevel(logging.DEBUG)
-    console_stderr_handler = logging.StreamHandler(sys.stderr)
+    console_stderr_handler = logging.StreamHandler(sys.stdout)
     console_stderr_handler.setFormatter(formatter)
     root_logger.addHandler(console_stderr_handler)
     return root_logger
