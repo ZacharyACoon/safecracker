@@ -10,6 +10,9 @@ class ToleranceException(Exception):
 class NotFoundException(Exception):
     pass
 
+class StopException(Exception):
+    pass
+
 
 class Index(Log):
     def __init__(self, motor, pin, position_degrees, tolerance_degrees=0.1, parent_logger=None, parent=None):
@@ -20,7 +23,9 @@ class Index(Log):
         self.tolerance_degrees = tolerance_degrees
         g.setup(self.pin, g.IN)
         self.last_status = None
-        self._calibrate = False
+        self.calibration = True
+        self.last_validation_time = None
+        self.stop_next_index = False
 
     @Log.method(1)
     def status(self):
@@ -44,8 +49,15 @@ class Index(Log):
             left_degrees = left * 360 / positions
             difference = abs(self.degrees - left_degrees)
             self.log.debug(f"position={left}, degrees={left_degrees}.  Expected degrees={self.degrees}.  Difference={round(difference, 4)}.  Tolerance={self.tolerance_degrees}")
-            if self._calibrate or difference > self.tolerance_degrees:
-                raise ToleranceException(f"Difference {round(difference, 4)}>{self.tolerance_degrees}")
+            self.last_validation_time = time.time()
+            if difference > self.tolerance_degrees:
+                self.log.warning(f"Difference {round(difference, 4)}>{self.tolerance_degrees}")
+                if self.calibration:
+                    self.motor.position.position = int(self.degrees * self.motor.position.positions / 360)
+                    self.log.warning("Corrected position.")
+                raise ToleranceException()
+            if self.stop_next_index:
+                raise StopException()
 
     @Log.method(4)
     def step(self):
@@ -53,11 +65,10 @@ class Index(Log):
 
     @Log.method(logging.INFO)
     def calibrate(self, direction=None):
-        self._calibrate = True
+        self.stop_next_index = True
         try:
-            self.motor.degrees.relative(360 * (1 if direction else -1))
+            self.motor.degrees.relative(361 * (1 if direction else -1))
             raise NotFoundException("Index not found?")
-        except ToleranceException as e:
-            self._calibrate = False
-            self.motor.position.position = int(self.degrees * self.motor.position.positions / 360)
-            self.log.warning("Calibrated position.")
+        except (ToleranceException, StopException):
+            self.stop_next_index = False
+        print("Calibration done?")

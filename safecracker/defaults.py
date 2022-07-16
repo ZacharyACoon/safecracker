@@ -5,7 +5,7 @@ import RPi.GPIO as g
 from safecracker.config import get_relative_config_json
 from safecracker.log import Log
 from safecracker.log import build_default_root_logger
-
+from safecracker.safecracker import Safecracker
 
 g.setwarnings(False)
 g.setmode(g.BOARD)
@@ -36,4 +36,12 @@ motor = DefaultMotor(
     numbers=hardware["dial"]["numbers"],
     numbers_tolerance=hardware["dial"]["tolerance"],
     left_to_right=hardware["dial"]["left_to_right"]
+)
+
+safecracker = Safecracker(
+    motor,
+    wheels=config["hardware"]["dial"]["wheels"],
+    latch_number=config["hardware"]["dial"]["latch_number"],
+    forbidden_range=config["hardware"]["dial"]["last_number_forbidden_range"],
+    parent_logger=log
 )

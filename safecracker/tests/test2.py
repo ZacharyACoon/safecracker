@@ -1,28 +1,16 @@
 import RPi.GPIO as g
-from safecracker.config import get_relative_config_json
+from safecracker.defaults import log, config, motor
 from safecracker.safecracker import Safecracker
-import trio
-import time
-
-g.setwarnings(False)
-g.setmode(g.BOARD)
 
 
 if __name__ == "__main__":
-    config = get_relative_config_json()
-    s = Safecracker(config)
-    s.motor.set_microsteps(16)
-    s.default_step_delay = 0.02
-
-    s.find_index()
-    s.zero()
-
-#    input("Right, stopping every 10")
-#    for n in range(90, -10, -10):
-#        list(s.dial_motor_wrapper.absolute(n, direction=False))
-#        time.sleep(0.5)
-
-    input("Left, stopping every 10")
-    for n in range(10, 110, 10):
-        list(s.dial_motor_wrapper.absolute(n, direction=True))
-        time.sleep(0.5)
+    safecracker = Safecracker(
+        motor,
+        wheels=config["hardware"]["dial"]["wheels"],
+        latch_number=config["hardware"]["dial"]["latch_number"],
+        forbidden_range=config["hardware"]["dial"]["last_number_forbidden_range"],
+        parent_logger=log
+    )
+    safecracker.motor.step_delay = 0.002
+    safecracker.motor.index.calibrate(direction=False)
+    safecracker.enter_combination([8, 71, 78])

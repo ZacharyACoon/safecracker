@@ -12,7 +12,7 @@ if __name__ == "__main__":
         if raw == "":
             break
         try:
-           v = int(raw)
+           v = float(raw)
            motor.numbers.relative(v)
         except Exception as e:
             print(e)

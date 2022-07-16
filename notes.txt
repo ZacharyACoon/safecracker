@@ -1,0 +1,2 @@
+attempt2, at 96628, changed index "degrees" from old 219.0375
+attempt2, major failure
