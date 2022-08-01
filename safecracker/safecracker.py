@@ -21,12 +21,11 @@ class Safecracker(Log):
 
     #@Log.method
     def index_to_combination(self, v):
-        v *= self.tolerance
         numbers = []
         for i in range(self.wheels-1):
-            d, v = divmod(v, self.numbers**(self.wheels - i - 1))
-            numbers.append(d)
-        numbers.append(v)
+            d, v = divmod(v, self.adjusted_numbers**(self.wheels - i - 1))
+            numbers.append(d * self.tolerance)
+        numbers.append(v * self.tolerance)
         return numbers
 
     @Log.method
